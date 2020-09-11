@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
+const carsRouter = require('./cars/cars-router.js')
 
 const app = express()
 
@@ -14,6 +15,8 @@ const morganOption = (NODE_ENV === 'production')
 app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
+
+app.use('/api/cars', carsRouter)
 
 app.get('/', (req, res) => {
     res.send('Hello, boilerplate!')
