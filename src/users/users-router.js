@@ -56,7 +56,10 @@ usersRouter
             req.params.user_id
         )
             .then(() => {
-                res.status(204).end()
+                res
+                    .status(204)
+                    .send(('User has been deleted'))
+                    .end()
             })
             .catch(next)
     })

@@ -18,6 +18,12 @@ const UsersService = {
             .where('id', id)
             .first()
     },
+    //--------------------------------------------
+    deleteUser(knex, id) {
+        return knex('users')
+            .where({ id })
+            .delete()
+    },
 }
 
 module.exports = UsersService
