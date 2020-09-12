@@ -14,4 +14,11 @@ VALUES
 ('R8', 'Audi', '2010', 'Great German car', 'HotWheels', '1/64'),
 ('DeLorean', 'DMC', '1981', 'Back to the future iconic Time Machine', 'HotWheels', '1/64');
 
+INSERT INTO users (username, email, user_password, is_admin)
+VALUES 
+('Mahmood', 'm.zibari@gmail.com', 'password1', true),
+('Katie', 'm.katie@gmail.com', 'password2', false),
+('Falafel', 'm.falafel@gmail.com', 'password3', false);
+
+
 COMMIT;
