@@ -5,7 +5,7 @@ const supertest = require('supertest')
 
 describe('Cars endpoint', function () {
     let db
-    const {testCars} = helpers.makeDiecastFixtures()
+    const { testCars } = helpers.makeDiecastFixtures()
     const expectedCars = helpers.makeExpectedCars(testCars)
 
     before('make knex instance', () => {
@@ -24,7 +24,7 @@ describe('Cars endpoint', function () {
             it(`responds with 200 and an empty list`, () => {
                 return supertest(app)
                     .get('/api/cars')
-                    
+
                     .expect(200, [])
             })
         })
@@ -75,6 +75,30 @@ describe('Cars endpoint', function () {
                         .get(`/api/cars/${postRes.body.id}`)
                         .expect(postRes.body)
                 )
+        })
+    })
+
+    describe(`DELETE /api/cars/:car_id`, () => {
+        context('Given there are cars in the database', () => {
+            const testCars = helpers.makeCarsArray()
+            beforeEach('insert cars', () => {
+                return db
+                    .into('cars')
+                    .insert(testCars)
+            })
+
+            it('responds with 204 and removes the car', () => {
+                const idToRemove = 2
+                const expectedCars = testCars.filter(car => car.id !== idToRemove)
+                return supertest(app)
+                    .delete(`/api/cars/${idToRemove}`)
+                    .expect(204)
+                    .then(res =>
+                        supertest(app)
+                            .get(`/api/cars`)
+                            .expect(expectedCars)
+                    )
+            })
         })
 
     })
