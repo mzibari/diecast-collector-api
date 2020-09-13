@@ -18,7 +18,7 @@ describe('Cars endpoint', function () {
     after('disconnect from db', () => db.destroy())
     before('cleanup', () => helpers.cleanTables(db))
     afterEach('cleanup', () => helpers.cleanTables(db))
-
+    //--------------------------------------------
     describe(`GET /api/cars`, () => {
         context(`Given no cars`, () => {
             it(`responds with 200 and an empty list`, () => {
@@ -42,6 +42,39 @@ describe('Cars endpoint', function () {
                     .get('/api/cars')
                     .expect(200, expectedCars)
             })
+        })
+
+    })
+    //--------------------------------------------
+    describe(`POST /api/cars/`, () => {
+        it(`creates a car, responding with 201 and the new car`, function () {
+            const newCar = {
+                model: 'Test new car',
+                make: 'Test new make',
+                year: 1990,
+                description: 'Test new description',
+                manufacturer: 'Test new manufacturer',
+                scale: 'Test new scale'
+            }
+            return supertest(app)
+                .post('/api/cars')
+                .send(newCar)
+                .expect(201)
+                .expect(res => {
+                    expect(res.body.model).to.eql(newCar.model)
+                    expect(res.body.make).to.eql(newCar.make)
+                    expect(res.body.year).to.eql(newCar.year)
+                    expect(res.body.description).to.eql(newCar.description)
+                    expect(res.body.manufacturer).to.eql(newCar.manufacturer)
+                    expect(res.body.scale).to.eql(newCar.scale)
+                    expect(res.body).to.have.property('id')
+                    expect(res.headers.location).to.eql(`/api/cars/${res.body.id}`)
+                })
+                .then(postRes =>
+                    supertest(app)
+                        .get(`/api/cars/${postRes.body.id}`)
+                        .expect(postRes.body)
+                )
         })
 
     })
