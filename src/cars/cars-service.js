@@ -1,6 +1,18 @@
 const CarsService = {
     getAllCars(knex) {
-        return knex.select('*').from('cars')
+        return knex
+            .from('cars')
+            .select(
+                'model',
+                'make',
+                'year',
+                'description',
+                'manufacturer',
+                'scale',
+                'review',
+                'username AS reviewer')
+            .join('reviews', 'reviews.car_id', '=', 'cars.id')
+            .join('users', 'users.id', '=', 'reviews.user_id')
     },
     //--------------------------------------------
     addCar(knex, newCar) {

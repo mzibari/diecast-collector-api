@@ -1,6 +1,14 @@
 const ReviewsService = {
     getAllReviews(knex) {
-        return knex.select('*').from('reviews')
+        return knex
+            .from('reviews')
+            .select(
+                'model',
+                'review',
+                'username'
+            )
+            .join('cars', 'cars.id', '=', 'reviews.car_id')
+            .join('users', 'users.id', '=', 'reviews.user_id')
     },
     //--------------------------------------------
     addReview(knex, newReview) {
