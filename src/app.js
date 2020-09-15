@@ -6,6 +6,7 @@ const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const carsRouter = require('./cars/cars-router.js')
 const usersRouter = require('./users/users-router.js')
+const reviewsRouter = require('./reviews/reviews-router.js')
 
 const app = express()
 
@@ -19,6 +20,7 @@ app.use(cors())
 
 app.use('/api/cars', carsRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/reviews', reviewsRouter)
 
 app.get('/', (req, res) => {
     res.send('Hello, boilerplate!')

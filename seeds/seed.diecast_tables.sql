@@ -20,5 +20,11 @@ VALUES
 ('Katie', 'm.katie@gmail.com', 'password2', false),
 ('Falafel', 'm.falafel@gmail.com', 'password3', false);
 
+INSERT INTO reviews (user_id, car_id, review)
+VALUES
+(1, 1, 'Great car'),
+(1, 2, 'Awesome car'),
+(2, 1, 'Awful car');
+
 
 COMMIT;
