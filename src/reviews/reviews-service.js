@@ -3,6 +3,9 @@ const ReviewsService = {
         return knex
             .from('reviews')
             .select(
+                'reviews.id',
+                'reviews.car_id',
+                'reviews.user_id',
                 'model',
                 'review',
                 'username'
@@ -23,7 +26,7 @@ const ReviewsService = {
     //--------------------------------------------
     getReviewById(knex, id) {
         return ReviewsService.getAllReviews(knex)
-            .where('id', id)
+            .where('reviews.id', id)
             .first()
     },
     //--------------------------------------------

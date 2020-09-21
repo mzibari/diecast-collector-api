@@ -3,16 +3,13 @@ const CarsService = {
         return knex
             .from('cars')
             .select(
+                'id',
                 'model',
                 'make',
                 'year',
                 'description',
                 'manufacturer',
                 'scale')
-            .join('reviews', 'reviews.car_id', 'cars.id')
-            .count('* as reviews')
-            .groupBy('cars.model','cars.make', 'cars.year', 'cars.description', 'cars.manufacturer', 'cars.scale', 'reviews.car_id')
-
     },
     //--------------------------------------------
     addCar(knex, newCar) {

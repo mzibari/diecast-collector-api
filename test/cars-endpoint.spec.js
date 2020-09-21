@@ -30,7 +30,7 @@ describe('Cars endpoint', function () {
             })
         })
 
-        context.only('Given there are cars in the database', () => {
+        context('Given there are cars in the database', () => {
             beforeEach('insert cars', () =>
                 helpers.seedDiecastTables(
                     db,

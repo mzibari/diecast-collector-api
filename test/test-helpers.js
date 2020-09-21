@@ -98,7 +98,8 @@ function cleanTables(db) {
     return db.raw(
         `TRUNCATE 
         cars,
-        users
+        users,
+        reviews
         RESTART IDENTITY CASCADE`
     )
 }
@@ -122,15 +123,14 @@ function seedDiecastTables(db, cars, users, reviews) {
 function makeExpectedCars(cars, reviews) {
     return cars.map(car => {
         const expectedReview = reviews.filter(review => review.car_id === car.id)
-        console.log(expectedReview.length)
         return {
+            id: car.id,
             model: car.model,
             make: car.make,
             year: car.year,
             description: car.description,
             manufacturer: car.manufacturer,
             scale: car.scale,
-            reviews: expectedReview.length
         }
     })
 }
@@ -149,8 +149,15 @@ function makeExpectedUsers(users) {
 
 function makeExpectedReviews(reviews, cars, users) {
     return reviews.map(review => {
+        const expectedCar = cars.filter(car => car.id === review.car_id)
+        const expectedUser = users.filter(user => user.id === review.user_id)
         return{
-
+            id: review.id,
+            car_id: review.car_id,
+            user_id: review.user_id,
+            model: expectedCar[0].model,
+            review: review.review,
+            username: expectedUser[0].username,
         }
     })
 }
