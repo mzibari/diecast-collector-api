@@ -11,8 +11,7 @@ const CarsService = {
                 'scale')
             .join('reviews', 'reviews.car_id', 'cars.id')
             .count('* as reviews')
-            .groupBy('cars.id', 'reviews.car_id')
-            .havingIn('reviews.review', '=', 'null')
+            .groupBy('cars.model','cars.make', 'cars.year', 'cars.description', 'cars.manufacturer', 'cars.scale', 'reviews.car_id')
 
     },
     //--------------------------------------------
