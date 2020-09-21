@@ -5,8 +5,8 @@ const supertest = require('supertest')
 
 describe('Cars endpoint', function () {
     let db
-    const { testCars } = helpers.makeDiecastFixtures()
-    const expectedCars = helpers.makeExpectedCars(testCars)
+    const { testCars, testReviews, testUsers } = helpers.makeDiecastFixtures()
+    const expectedCars = helpers.makeExpectedCars(testCars, testReviews)
 
     before('make knex instance', () => {
         db = knex({
@@ -15,6 +15,7 @@ describe('Cars endpoint', function () {
         })
         app.set('db', db)
     })
+
     after('disconnect from db', () => db.destroy())
     before('cleanup', () => helpers.cleanTables(db))
     afterEach('cleanup', () => helpers.cleanTables(db))
@@ -29,11 +30,13 @@ describe('Cars endpoint', function () {
             })
         })
 
-        context('Given there are cars in the database', () => {
+        context.only('Given there are cars in the database', () => {
             beforeEach('insert cars', () =>
                 helpers.seedDiecastTables(
                     db,
                     testCars,
+                    testUsers,
+                    testReviews,
                 )
             )
 

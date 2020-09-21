@@ -8,11 +8,12 @@ const CarsService = {
                 'year',
                 'description',
                 'manufacturer',
-                'scale',
-                'review',
-                'username AS reviewer')
-            .join('reviews', 'reviews.car_id', '=', 'cars.id')
-            .join('users', 'users.id', '=', 'reviews.user_id')
+                'scale')
+            .join('reviews', 'reviews.car_id', 'cars.id')
+            .count('* as reviews')
+            .groupBy('cars.id', 'reviews.car_id')
+            .havingIn('reviews.review', '=', 'null')
+
     },
     //--------------------------------------------
     addCar(knex, newCar) {
@@ -27,7 +28,7 @@ const CarsService = {
     //--------------------------------------------
     getCarById(knex, id) {
         return CarsService.getAllCars(knex)
-            .where('id', id)
+            .where('cars.id', id)
             .first()
     },
     //--------------------------------------------

@@ -65,10 +65,33 @@ function makeUsersArray() {
     ]
 }
 
+function makeReviewsArray(){
+    return [
+        {
+            id: 1,
+            review: "Great car",
+            car_id: 2,
+            user_id: 1,
+        },
+        {
+            id: 2,
+            review: "Great car too",
+            car_id: 2,
+            user_id: 1,
+        },
+        {
+            id: 3,
+            review: "really great car",
+            car_id: 1,
+            user_id: 1,
+        }
+    ]
+}
 function makeDiecastFixtures() {
     const testCars = makeCarsArray()
     const testUsers = makeUsersArray()
-    return { testCars, testUsers }
+    const testReviews = makeReviewsArray()
+    return { testCars, testReviews, testUsers }
 }
 
 function cleanTables(db) {
@@ -80,7 +103,7 @@ function cleanTables(db) {
     )
 }
 
-function seedDiecastTables(db, cars, users) {
+function seedDiecastTables(db, cars, users, reviews) {
     return db
         .into('cars')
         .insert(cars)
@@ -89,18 +112,25 @@ function seedDiecastTables(db, cars, users) {
                 .into('users')
                 .insert(users)
         )
+        .then(() =>
+            db
+                .into('reviews')
+                .insert(reviews)
+        )
 }
 
-function makeExpectedCars(cars) {
+function makeExpectedCars(cars, reviews) {
     return cars.map(car => {
+        const expectedReview = reviews.filter(review => review.car_id === car.id)
+        console.log(expectedReview.length)
         return {
-            id: car.id,
             model: car.model,
             make: car.make,
             year: car.year,
             description: car.description,
             manufacturer: car.manufacturer,
             scale: car.scale,
+            reviews: expectedReview.length
         }
     })
 }
@@ -117,12 +147,22 @@ function makeExpectedUsers(users) {
     })
 }
 
+function makeExpectedReviews(reviews, cars, users) {
+    return reviews.map(review => {
+        return{
+
+        }
+    })
+}
+
 module.exports = {
     makeCarsArray,
     makeUsersArray,
+    makeReviewsArray,
     makeDiecastFixtures,
     cleanTables,
     seedDiecastTables,
     makeExpectedCars,
     makeExpectedUsers,
+    makeExpectedReviews,
 }
