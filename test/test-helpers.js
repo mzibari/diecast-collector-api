@@ -65,7 +65,7 @@ function makeUsersArray() {
     ]
 }
 
-function makeReviewsArray(){
+function makeReviewsArray() {
     return [
         {
             id: 1,
@@ -87,11 +87,32 @@ function makeReviewsArray(){
         }
     ]
 }
+
+function makeImagesArray() {
+    return [
+        {
+            id: 1,
+            car_id: 1,
+            img_name: 'Skyline',
+            img: 'images/skyline.jpg',
+            approved: false,
+        },
+        {
+            id: 2,
+            car_id: 2,
+            img_name: 'Supra',
+            img: 'images/supra.jpg',
+            approved: false,
+        }
+    ]
+}
+
 function makeDiecastFixtures() {
     const testCars = makeCarsArray()
     const testUsers = makeUsersArray()
     const testReviews = makeReviewsArray()
-    return { testCars, testReviews, testUsers }
+    const testImages = makeImagesArray()
+    return { testCars, testReviews, testUsers, testImages }
 }
 
 function cleanTables(db) {
@@ -99,12 +120,13 @@ function cleanTables(db) {
         `TRUNCATE 
         cars,
         users,
-        reviews
+        reviews,
+        images
         RESTART IDENTITY CASCADE`
     )
 }
 
-function seedDiecastTables(db, cars, users, reviews) {
+function seedDiecastTables(db, cars, users, reviews, images) {
     return db
         .into('cars')
         .insert(cars)
@@ -117,6 +139,11 @@ function seedDiecastTables(db, cars, users, reviews) {
             db
                 .into('reviews')
                 .insert(reviews)
+        )
+        .then(() =>
+            db
+                .into('images')
+                .insert(images)
         )
 }
 
@@ -151,7 +178,7 @@ function makeExpectedReviews(reviews, cars, users) {
     return reviews.map(review => {
         const expectedCar = cars.filter(car => car.id === review.car_id)
         const expectedUser = users.filter(user => user.id === review.user_id)
-        return{
+        return {
             id: review.id,
             car_id: review.car_id,
             user_id: review.user_id,
@@ -162,14 +189,28 @@ function makeExpectedReviews(reviews, cars, users) {
     })
 }
 
+function makeExpectedImages(images) {
+    return images.map(image => {
+        return {
+            id: image.id,
+            car_id: image.car_id,
+            img_name: image.img_name,
+            img: image.img,
+            approved: image.approved,
+        }
+    })
+}
+
 module.exports = {
     makeCarsArray,
     makeUsersArray,
     makeReviewsArray,
+    makeImagesArray,
     makeDiecastFixtures,
     cleanTables,
     seedDiecastTables,
     makeExpectedCars,
     makeExpectedUsers,
     makeExpectedReviews,
+    makeExpectedImages,
 }

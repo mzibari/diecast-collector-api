@@ -1,16 +1,18 @@
-const multer = require ('multer')
+const multer = require('multer')
 const storage = multer.diskStorage({
-    destination: function(req, file, cb){
+    destination: function (req, file, cb) {
         cb(null, 'uploads')
     },
-    filename: function(req, file, cb){
+    filename: function (req, file, cb) {
         cb(null, file.originalname)
     },
 })
 
-const upload = multer({storage: storage, limits: {
-    fileSize: 1204 * 1204 * 5
-}})
+const upload = multer({
+    storage: storage, limits: {
+        fileSize: 1204 * 1204 * 5
+    }
+})
 
 
 const express = require('express')
@@ -82,7 +84,7 @@ imagesRouter
 
 async function checkImageExists(req, res, next) {
     try {
-        const image = await ImageService.getImageById(
+        const image = await ImagesService.getImageById(
             req.app.get('db'),
             req.params.image_id
         )
