@@ -33,7 +33,6 @@ imagesRouter
             .catch(next)
     })
     .post(upload.single('carImage'), (req, res, next) => {
-        console.log(req.file.path)
         const { car_id, img_name } = req.body
         const img = req.file.path
         if (!car_id || !img_name) {
@@ -103,4 +102,3 @@ async function checkImageExists(req, res, next) {
 
 
 module.exports = imagesRouter
-
