@@ -4,7 +4,7 @@ const storage = multer.diskStorage({
         cb(null, 'uploads')
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname)
+        cb(null, `${file.originalname}`)
     },
 })
 
@@ -13,7 +13,6 @@ const upload = multer({
         fileSize: 1204 * 1204 * 5
     }
 })
-
 
 const express = require('express')
 const imagesRouter = express.Router()
@@ -34,7 +33,7 @@ imagesRouter
     })
     .post(upload.single('carImage'), (req, res, next) => {
         const { car_id, img_name } = req.body
-        const img = req.file.path
+        const img = req.file.originalname
         if (!car_id || !img_name) {
             return res.status(400).json({
                 error: {
@@ -63,7 +62,7 @@ imagesRouter
     .route('/:image_id')
     .all(checkImageExists)
     .get((req, res) => {
-        res.json(res.image)
+        res.sendFile(path.join(__dirname,`../../${res.image.img}`))
     })
     // DELETE /images/image_id endpoint, delete image
     .delete((req, res, next) => {
