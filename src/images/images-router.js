@@ -1,3 +1,4 @@
+const cors = require('cors')
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -19,6 +20,7 @@ const imagesRouter = express.Router()
 const jsonParser = express.json()
 const path = require('path')
 const ImagesService = require('./images-service')
+app.use(cors())
 
 imagesRouter
     .route('/')
