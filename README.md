@@ -66,7 +66,7 @@ Returns a JSON object containing all the cars
 ```]``` <br><br>
 
 
-### ```4./cars/car_id```
+### ```4./cars/:car_id```
 Returns a JSON object with the requested car_id       
 ```[```  
 &nbsp;&nbsp;&nbsp;&nbsp;```{```  
